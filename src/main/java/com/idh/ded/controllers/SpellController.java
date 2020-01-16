@@ -21,15 +21,21 @@ public class SpellController {
         return ResponseEntity.status(HttpStatus.OK).body(spellService.findAll());
     }
 
-    @GetMapping("{spellId")
+    @GetMapping("{spellId}")
     public ResponseEntity<?> findOne(@PathVariable String spellId) {
         return ResponseEntity.status(HttpStatus.OK).body(spellService.findOne(spellId));
     }
 
+    @Deprecated
+    @GetMapping("cast/{spellId}")
+    public ResponseEntity<?> castSpell(@PathVariable String spellId) {
+        return ResponseEntity.status(HttpStatus.OK).body(spellService.cast(spellId));
+    }
+
+    //TODO???
     @PostMapping
     public ResponseEntity<?> newSpell(@RequestBody Spell spell) {
         spellService.newSpell(spell);
-        //TODO
         return null;
-    }git
+    }
 }

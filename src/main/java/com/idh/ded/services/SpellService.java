@@ -1,14 +1,13 @@
 package com.idh.ded.services;
 
-import com.idh.ded.DTOs.Class;
 import com.idh.ded.DTOs.Spell;
 import com.idh.ded.repositories.SpellRepository;
 import com.idh.ded.services.exceptions.ObjectNotFoundException;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class SpellService {
@@ -29,4 +28,25 @@ public class SpellService {
         //TODO
     }
 
+    @Deprecated
+    public Map<String, String> cast(String spellId) {
+
+        spellRepository.findById(spellId).orElseThrow(() ->
+                new ObjectNotFoundException("404 - Not Found ID: " + spellId, new Throwable("Type: " + Spell.class.getName())));
+
+        int d = 20;
+        int rand_dice = 0;
+
+        Random rand = new Random();
+
+        while (rand_dice == 0)
+            rand_dice = rand.nextInt(d);
+
+        Map<String, String> spellCastResult = new HashMap<>();
+
+        spellCastResult.put("spell", spellId);
+        spellCastResult.put("roll", String.valueOf(rand_dice));
+        //TODO
+        return spellCastResult;
+    }
 }
