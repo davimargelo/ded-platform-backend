@@ -1,5 +1,6 @@
 package com.idh.ded.controllers;
 
+import com.idh.ded.DTOs.Class;
 import com.idh.ded.DTOs.Races;
 import com.idh.ded.services.RaceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,12 @@ public class RaceController {
 
     @Autowired
     RaceService raceService;
+
+    @GetMapping
+    public ResponseEntity<List<Races>> getAll() {
+        List<Races> allRaces = raceService.getAll();
+        return ResponseEntity.status(HttpStatus.OK).body(allRaces);
+    }
 
     //Pedir explicação de novo depois
     @GetMapping(value = "{racesId}")
