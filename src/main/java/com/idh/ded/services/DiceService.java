@@ -4,10 +4,11 @@ import com.idh.ded.DTOs.Dice;
 import com.idh.ded.DTOs.DicePreset;
 import com.idh.ded.repositories.DicePresetsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.apache.http.client.HttpResponseException;
 
 import java.util.*;
-import java.util.stream.IntStream;
 
 @Service
 public class DiceService {
@@ -39,7 +40,10 @@ public class DiceService {
         return result;
     }
 
-    public void createPreset(String presetName, List<Dice> dices) {
+    public DicePreset createPreset(String presetName, List<Dice> dices) throws HttpResponseException {
+
+        if (dicePresetsRepository.existsById(presetName))
+            throw new HttpResponseException(HttpStatus.CONFLICT.value(), "This Preset Name is been used");
 
         DicePreset dicePreset = new DicePreset(presetName);
 
@@ -50,6 +54,8 @@ public class DiceService {
         }
 
         dicePresetsRepository.save(dicePreset);
+
+        return dicePreset;
     }
 
 }
