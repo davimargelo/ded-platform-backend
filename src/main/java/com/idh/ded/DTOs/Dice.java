@@ -1,30 +1,70 @@
 package com.idh.ded.DTOs;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
 public class Dice {
-    int nOfDices;
-    int nOfRolls;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @NotNull
+    private int d;
+
+    @NotNull
+    private int rolls;
+
+    @JsonManagedReference
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            }, mappedBy = "diceList")
+    private List<DicePreset> dicePresetList = new ArrayList<>();
 
     public Dice() {
     }
 
-    public Dice(int nOfSides, int nOfDices, int nOfRolls) {
-        this.nOfDices = nOfDices;
-        this.nOfRolls = nOfRolls;
+    public Dice(int d, int nOfRolls) {
+        this.d = d;
+        this.rolls = nOfRolls;
     }
 
-    public int getnOfDices() {
-        return nOfDices;
+    public Integer getId() {
+        return id;
     }
 
-    public void setnOfDices(int nOfDices) {
-        this.nOfDices = nOfDices;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public int getnOfRolls() {
-        return nOfRolls;
+    public int getD() {
+        return d;
     }
 
-    public void setnOfRolls(int nOfRolls) {
-        this.nOfRolls = nOfRolls;
+    public void setD(int d) {
+        this.d = d;
+    }
+
+    public int getRolls() {
+        return rolls;
+    }
+
+    public void setRolls(int rolls) {
+        this.rolls = rolls;
+    }
+
+    public List<DicePreset> getDicePresetList() {
+        return dicePresetList;
+    }
+
+    public void setDicePresetList(List<DicePreset> dicePresetList) {
+        this.dicePresetList = dicePresetList;
     }
 }
