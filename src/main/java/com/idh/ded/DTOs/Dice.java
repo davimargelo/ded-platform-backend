@@ -1,5 +1,6 @@
 package com.idh.ded.DTOs;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -20,7 +21,7 @@ public class Dice {
     @NotNull
     private int rolls;
 
-    @JsonManagedReference
+    @JsonBackReference
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,

@@ -44,11 +44,11 @@ public class DedPlatformApplication implements CommandLineRunner {
 				new Spell("powerslash", "Power Slash", "Successfully hit a single target in the front row with stored up power.", "spells/powerslash")
 		));
 
-//		DicePreset dicePreset = new DicePreset("Preset 1");
-//		Dice dice = new Dice(10,2);
-//
-//		dicePreset.getDiceList().add(dice);
-//		dice.getDicePresetList().add(dicePreset);
-//		dicePresetsRepository.save(dicePreset);
+		DicePreset dicePreset = new DicePreset("Preset 1");
+		Dice dice = new Dice(10,2);
+
+		dicePreset.getDiceList().add(dice);
+		dice.getDicePresetList().add(dicePreset);
+		dicePresetsRepository.save(dicePreset);
 	}
 }

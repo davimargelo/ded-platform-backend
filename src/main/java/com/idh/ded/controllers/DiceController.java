@@ -30,6 +30,11 @@ public class DiceController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
+    @GetMapping
+    public ResponseEntity<List<DicePreset>> getAllPresets() {
+        return ResponseEntity.status(HttpStatus.OK).body(diceService.getAllDicePresets());
+    }
+
     @PostMapping(value = "create-preset/{presetName}")
     public ResponseEntity<?> createPreSet(@PathVariable String presetName, @RequestBody List<Map<String, Integer>> dices) {
         System.out.println(presetName + "\n" + dices);

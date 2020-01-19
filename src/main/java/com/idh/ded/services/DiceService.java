@@ -58,4 +58,8 @@ public class DiceService {
         return dicePreset;
     }
 
+    public List<DicePreset> getAllDicePresets() {
+        return dicePresetsRepository.findAll();
+    }
+
 }

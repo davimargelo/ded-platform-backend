@@ -1,6 +1,7 @@
 package com.idh.ded.DTOs;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -14,7 +15,7 @@ public class DicePreset {
     @NotNull
     private String name;
 
-    @JsonBackReference
+    @JsonManagedReference
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
