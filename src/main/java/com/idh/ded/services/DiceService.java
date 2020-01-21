@@ -3,10 +3,11 @@ package com.idh.ded.services;
 import com.idh.ded.DTOs.Dice;
 import com.idh.ded.DTOs.DicePreset;
 import com.idh.ded.repositories.DicePresetsRepository;
+import com.idh.ded.services.exceptions.ObjectNotFoundException;
+import org.apache.http.client.HttpResponseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.apache.http.client.HttpResponseException;
 
 import java.util.*;
 
@@ -34,22 +35,27 @@ public class DiceService {
             sum += value;
         }
         result.put(rollResults.toString()
-                .replace(","," +")
-                .replace("[","")
-                .replace("]",""), sum);
+                .replace(",", " +")
+                .replace("[", "")
+                .replace("]", ""), sum);
         return result;
     }
 
-    public DicePreset createPreset(String presetName, List<Dice> dices) throws HttpResponseException {
+    public DicePreset createPreset(String presetName, List<Map<String, Integer>> dices) throws HttpResponseException {
+        List<Dice> diceList = new ArrayList<>();
+
+        for (Map<String, Integer> dice : dices) {
+            diceList.add(new Dice(dice.get("d"), dice.get("rolls")));
+        }
 
         if (dicePresetsRepository.existsById(presetName))
             throw new HttpResponseException(HttpStatus.CONFLICT.value(), "This Preset Name is been used");
 
         DicePreset dicePreset = new DicePreset(presetName);
 
-        dicePreset.getDiceList().addAll(dices);
+        dicePreset.getDiceList().addAll(diceList);
 
-        for (Dice d : dices) {
+        for (Dice d : diceList) {
             d.getDicePresetList().add(dicePreset);
         }
 
@@ -58,8 +64,28 @@ public class DiceService {
         return dicePreset;
     }
 
+    public DicePreset findOne(String presetName) {
+        return dicePresetsRepository.findById(presetName)
+                .orElseThrow(() -> new ObjectNotFoundException("404 - Not Found ID: " + presetName, new Throwable("Type: " + DicePreset.class.getName())));
+    }
+
     public List<DicePreset> getAllDicePresets() {
         return dicePresetsRepository.findAll();
+    }
+
+    public DicePreset updatePreset(String presetName, String newPresetName, List<Map<String, Integer>> dices) throws HttpResponseException {
+        if (dicePresetsRepository.existsById(newPresetName))
+            throw new HttpResponseException(HttpStatus.CONFLICT.value(), "This Preset Name is been used");
+
+        dicePresetsRepository.findById(presetName)
+                .orElseThrow(() -> new ObjectNotFoundException("404 - Not Found ID: " + presetName, new Throwable("Type: " + DicePreset.class.getName())));
+
+        dicePresetsRepository.deleteById(presetName);
+
+        createPreset(newPresetName, dices);
+
+        return dicePresetsRepository.findById(newPresetName)
+                .orElseThrow(() -> new ObjectNotFoundException("404 - Not Found ID: " + newPresetName, new Throwable("Type: " + DicePreset.class.getName())));
     }
 
 }
