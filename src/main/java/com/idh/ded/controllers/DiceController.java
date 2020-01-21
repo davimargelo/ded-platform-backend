@@ -18,9 +18,15 @@ public class DiceController {
     @Autowired
     DiceService diceService;
 
-    @GetMapping(value = "/{dice}/{rolls}")
+    @GetMapping(value = "/roll/{dice}/{rolls}")
     public ResponseEntity<Map<String, Integer>> roll(@PathVariable int dice, @PathVariable int rolls) {
         Map<String, Integer> result = diceService.roll(dice, rolls);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    @GetMapping(value = "/roll/{presetName}")
+    public ResponseEntity<?> rollPreset(@PathVariable String presetName) {
+        List<Map<String, Integer>> result = diceService.rollPreset(presetName);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
@@ -54,5 +60,11 @@ public class DiceController {
         } catch (HttpResponseException e) {
             return ResponseEntity.status(e.getStatusCode()).body(e.getReasonPhrase());
         }
+    }
+
+    @DeleteMapping(value = "/{presetName}")
+    public ResponseEntity<?> deletePreset(@PathVariable String presetName) {
+        diceService.deletePreset(presetName);
+        return ResponseEntity.status(HttpStatus.OK).body(presetName + " deleted!");
     }
 }

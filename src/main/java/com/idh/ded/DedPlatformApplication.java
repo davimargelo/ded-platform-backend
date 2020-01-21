@@ -1,8 +1,6 @@
 package com.idh.ded;
 
 import com.idh.ded.DTOs.Class;
-import com.idh.ded.DTOs.Dice;
-import com.idh.ded.DTOs.DicePreset;
 import com.idh.ded.DTOs.Spell;
 import com.idh.ded.repositories.ClassRepository;
 import com.idh.ded.repositories.DicePresetsRepository;
@@ -43,12 +41,5 @@ public class DedPlatformApplication implements CommandLineRunner {
 				new Spell("fireball", "Fire Ball", "Throws a fire ball and set fire on enemy","spells/fireball"),
 				new Spell("powerslash", "Power Slash", "Successfully hit a single target in the front row with stored up power.", "spells/powerslash")
 		));
-
-//		DicePreset dicePreset = new DicePreset("Preset 1");
-//		Dice dice = new Dice(10,2);
-//
-//		dicePreset.getDiceList().add(dice);
-//		dice.getDicePresetList().add(dicePreset);
-//		dicePresetsRepository.save(dicePreset);
 	}
 }
