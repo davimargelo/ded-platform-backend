@@ -47,8 +47,7 @@ public class DiceService {
     }
 
     public List<Map<String, Integer>> rollPreset(String presetName) {
-        DicePreset preset = dicePresetsRepository.findById(presetName)
-                .orElseThrow(() -> new ObjectNotFoundException("404 - Not Found ID: " + presetName, new Throwable("Type: " + DicePreset.class.getName())));
+        DicePreset preset = findOne(presetName);
 
         List<Map<String, Integer>> result = new ArrayList<>();
 
@@ -60,8 +59,7 @@ public class DiceService {
 
     public DicePreset createPreset(String presetName, List<Map<String, Integer>> dices) throws HttpResponseException {
 
-        if (dicePresetsRepository.existsById(presetName))
-            throw new HttpResponseException(HttpStatus.CONFLICT.value(), "This Preset Name is been used");
+        existsById(presetName);
 
         List<Dice> diceList = new ArrayList<>();
 
@@ -87,28 +85,31 @@ public class DiceService {
                 .orElseThrow(() -> new ObjectNotFoundException("404 - Not Found ID: " + presetName, new Throwable("Type: " + DicePreset.class.getName())));
     }
 
+    private boolean existsById(String presetName) throws HttpResponseException {
+        if (dicePresetsRepository.existsById(presetName))
+            throw new HttpResponseException(HttpStatus.CONFLICT.value(), "This Preset Name is been used");
+        else
+            return false;
+    }
+
     public List<DicePreset> getAllDicePresets() {
         return dicePresetsRepository.findAll();
     }
 
     public DicePreset updatePreset(String presetName, String newPresetName, List<Map<String, Integer>> dices) throws HttpResponseException {
-        if (dicePresetsRepository.existsById(newPresetName))
-            throw new HttpResponseException(HttpStatus.CONFLICT.value(), "This Preset Name is been used");
+        existsById(newPresetName);
 
-        dicePresetsRepository.findById(presetName)
-                .orElseThrow(() -> new ObjectNotFoundException("404 - Not Found ID: " + presetName, new Throwable("Type: " + DicePreset.class.getName())));
+        findOne(presetName);
 
         dicePresetsRepository.deleteById(presetName);
 
         createPreset(newPresetName, dices);
 
-        return dicePresetsRepository.findById(newPresetName)
-                .orElseThrow(() -> new ObjectNotFoundException("404 - Not Found ID: " + newPresetName, new Throwable("Type: " + DicePreset.class.getName())));
+        return findOne(newPresetName);
     }
 
     public DicePreset updatePresetDicelist(String presetName, List<Map<String, Integer>> dices) throws HttpResponseException {
-        dicePresetsRepository.findById(presetName)
-                .orElseThrow(() -> new ObjectNotFoundException("404 - Not Found ID: " + presetName, new Throwable("Type: " + DicePreset.class.getName())));
+        findOne(presetName);
 
         DicePreset dicePresetToUpdate = dicePresetsRepository.getOne(presetName);
 
@@ -126,8 +127,7 @@ public class DiceService {
     }
 
     public void deletePreset(String presetName) {
-        dicePresetsRepository.findById(presetName)
-                .orElseThrow(() -> new ObjectNotFoundException("404 - Not Found ID: " + presetName, new Throwable("Type: " + DicePreset.class.getName())));
+        findOne(presetName);
         dicePresetsRepository.deleteById(presetName);
     }
 
