@@ -19,6 +19,12 @@ public class DiceController {
     @Autowired
     DiceService diceService;
 
+    @Deprecated
+    @GetMapping(value = "/rollers")
+    public ResponseEntity<?> findAllRollers() {
+        return ResponseEntity.status(HttpStatus.OK).body(diceService.findRollers());
+    }
+
     @ApiOperation(value = "Number of sides / number of rolls = to generate a random play")
     @GetMapping(value = "/roll/{dice}/{rolls}")
     public ResponseEntity<Map<String, Integer>> roll(@PathVariable int dice, @PathVariable int rolls) {
@@ -59,7 +65,16 @@ public class DiceController {
         return ResponseEntity.status(HttpStatus.OK).body(diceService.findOne(presetName));
     }
 
-    @ApiOperation(value = "Updates a preset sending a new array of objects: {\"d\": Integer, \"rolls\": Integer}")
+    @PutMapping(value = "/{presetName}")
+    public ResponseEntity<?> updatePresetDiceList(@PathVariable String presetName, @RequestBody List<Map<String, Integer>> dices) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(diceService.updatePresetDicelist(presetName, dices));
+        } catch (HttpResponseException e) {
+            return ResponseEntity.status(e.getStatusCode()).body(e.getReasonPhrase());
+        }
+    }
+
+    @ApiOperation(value = "Updates a preset names + dicelist by sending a new array of objects: {\"d\": Integer, \"rolls\": Integer}")
     @PutMapping(value = "/{presetName}/{newPresetName}")
     public ResponseEntity<?> updatePreset(@PathVariable String presetName, @PathVariable String newPresetName, @RequestBody List<Map<String, Integer>> dices) {
         try {

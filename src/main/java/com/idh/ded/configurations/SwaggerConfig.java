@@ -19,10 +19,10 @@ import java.time.LocalDate;
 public class SwaggerConfig {
     @Bean
     public Docket eDesignApi(SwaggerConfigProperties swaggerConfigProperties) {
-        return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo(swaggerConfigProperties)).enable(Boolean.valueOf(swaggerConfigProperties.getEnabled())).select().apis(RequestHandlerSelectors.any())
+        return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo(swaggerConfigProperties)).enable(Boolean.parseBoolean(swaggerConfigProperties.getEnabled())).select().apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any()).build().pathMapping("/").directModelSubstitute(LocalDate.class, String.class)
-                .genericModelSubstitutes(ResponseEntity.class).useDefaultResponseMessages(Boolean.valueOf(swaggerConfigProperties.getUseDefaultResponseMessages()))
-                .enableUrlTemplating(Boolean.valueOf(swaggerConfigProperties.getEnableUrlTemplating()));
+                .genericModelSubstitutes(ResponseEntity.class).useDefaultResponseMessages(Boolean.parseBoolean(swaggerConfigProperties.getUseDefaultResponseMessages()))
+                .enableUrlTemplating(Boolean.parseBoolean(swaggerConfigProperties.getEnableUrlTemplating()));
     }
     @Bean
     UiConfiguration uiConfig(SwaggerConfigProperties swaggerConfigProperties) {

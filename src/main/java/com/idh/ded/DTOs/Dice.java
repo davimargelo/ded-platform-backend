@@ -1,27 +1,27 @@
 package com.idh.ded.DTOs;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.idh.ded.DTOs.enums.DiceType;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Dice {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @NotNull
-    private int d;
+    private Integer d;
 
     @NotNull
-    private int rolls;
+    private Integer rolls;
 
-    @JsonBackReference
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
@@ -32,25 +32,17 @@ public class Dice {
     public Dice() {
     }
 
-    public Dice(int d, int nOfRolls) {
-        this.d = d;
+    public Dice(DiceType d, int nOfRolls) {
+        this.d = d.getCod();
         this.rolls = nOfRolls;
     }
 
-    public Integer getId() {
-        return id;
+    public DiceType getD() {
+        return DiceType.toEnum(d);
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public int getD() {
-        return d;
-    }
-
-    public void setD(int d) {
-        this.d = d;
+    public void setD(DiceType d) {
+        this.d = d.getCod();
     }
 
     public int getRolls() {
@@ -61,11 +53,33 @@ public class Dice {
         this.rolls = rolls;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public List<DicePreset> getDicePresetList() {
         return dicePresetList;
     }
 
     public void setDicePresetList(List<DicePreset> dicePresetList) {
         this.dicePresetList = dicePresetList;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Dice dice = (Dice) o;
+        return d.equals(dice.d) &&
+                rolls.equals(dice.rolls);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(d, rolls);
     }
 }
