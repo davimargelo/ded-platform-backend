@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
@@ -52,8 +54,9 @@ public class DiceController {
 
         try {
             DicePreset dicePreset = diceService.createPreset(presetName, dices);
-
-            return ResponseEntity.status(HttpStatus.OK).body(dicePreset);
+            URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+                    .buildAndExpand(dicePreset.getName()).toUri();
+            return ResponseEntity.created(uri).build();
         } catch (HttpResponseException e) {
             return ResponseEntity.status(e.getStatusCode()).body(e.getReasonPhrase());
         }
