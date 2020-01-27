@@ -8,6 +8,9 @@ import com.idh.ded.repositories.DiceRollRepository;
 import com.idh.ded.services.exceptions.ObjectAlreadyExistsException;
 import com.idh.ded.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -22,8 +25,13 @@ public class DiceService {
     @Autowired
     DiceRollRepository diceRollRepository;
 
-    public Map<String, Integer> roll(Integer dice, Integer rolls) {
-        Map<String, Integer> result = new HashMap<>();
+    public Page<DicePreset> getAllDicePresetsByPage(Integer page, Integer size, String orderBy, String direction) {
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.valueOf(direction), orderBy);
+        return dicePresetsRepository.findAll(pageRequest);
+    }
+
+    public Map<String, String> roll(Integer dice, Integer rolls) {
+        Map<String, String> result = new HashMap<>();
         Random rand = new Random();
         int roll = 0;
         int sum = 0;
@@ -39,17 +47,18 @@ public class DiceService {
         for (int value : rollResults) {
             sum += value;
         }
-        result.put(rollResults.toString()
+        result.put("sum", rollResults.toString()
                 .replace(",", " +")
                 .replace("[", "")
-                .replace("]", ""), sum);
+                .replace("]", ""));
+        result.put("result", String.valueOf((sum)));
         return result;
     }
 
-    public List<Map<String, Integer>> rollPreset(String presetName) {
+    public List<Map<String, String>> rollPreset(String presetName) {
         DicePreset preset = findOne(presetName);
 
-        List<Map<String, Integer>> result = new ArrayList<>();
+        List<Map<String, String>> result = new ArrayList<>();
 
         result = preset.getDiceList().stream().map(dice -> roll(dice.getD().getCod(), dice.getRolls())).collect(Collectors.toList());
 // foreach para referencia

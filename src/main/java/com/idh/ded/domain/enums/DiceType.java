@@ -1,5 +1,7 @@
 package com.idh.ded.domain.enums;
 
+import com.idh.ded.services.exceptions.ObjectNotFoundException;
+
 public enum DiceType {
         D3(4, "Rolls D4"),
         D4(6, "Rolls D6"),
@@ -32,6 +34,6 @@ public enum DiceType {
                 if ((cod == x.getCod()))
                     return x;
 
-            throw new IllegalArgumentException("Invalid Id: " + cod);
+            throw new ObjectNotFoundException("Invalid dice - number os sides: " + cod);
         }
 }

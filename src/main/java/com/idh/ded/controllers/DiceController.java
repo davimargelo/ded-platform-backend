@@ -4,6 +4,7 @@ import com.idh.ded.domain.DicePreset;
 import com.idh.ded.services.DiceService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,16 +28,18 @@ public class DiceController {
     }
 
     @ApiOperation(value = "Number of sides / number of rolls = to generate a random play")
-    @GetMapping(value = "/roll/{dice}/{rolls}")
-    public ResponseEntity<Map<String, Integer>> roll(@PathVariable int dice, @PathVariable int rolls) {
-        Map<String, Integer> result = diceService.roll(dice, rolls);
+    @GetMapping(value = "/roll")
+    public ResponseEntity<Map<String, String>> roll(
+            @RequestParam(value = "dice", defaultValue = "6") Integer dice,
+            @RequestParam(value = "rolls", defaultValue = "1")Integer rolls) {
+        Map<String, String> result = diceService.roll(dice, rolls);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @ApiOperation(value = "Rolls a preset")
     @GetMapping(value = "/roll/{presetName}")
     public ResponseEntity<?> rollPreset(@PathVariable String presetName) {
-        List<Map<String, Integer>> result = diceService.rollPreset(presetName);
+        List<Map<String, String>> result = diceService.rollPreset(presetName);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
@@ -44,6 +47,16 @@ public class DiceController {
     @GetMapping
     public ResponseEntity<List<DicePreset>> getAllPresets() {
         return ResponseEntity.status(HttpStatus.OK).body(diceService.getAllDicePresets());
+    }
+
+    @ApiOperation(value = "Get all Presets By PAGE")
+    @GetMapping(value = "page")
+    public ResponseEntity<Page<DicePreset>> getAllPresetsByPage(
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "size", defaultValue = "10")Integer size,
+            @RequestParam(value = "orderBy", defaultValue = "name")String orderBy,
+            @RequestParam(value = "direction", defaultValue = "ASC")String direction) {
+        return ResponseEntity.status(HttpStatus.OK).body(diceService.getAllDicePresetsByPage(page, size, orderBy, direction));
     }
 
     @ApiOperation(value = "Creates a new preset sending an array of objects {\"d\": Integer, \"rolls\": Integer}")
