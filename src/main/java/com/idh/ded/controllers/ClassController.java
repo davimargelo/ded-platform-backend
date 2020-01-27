@@ -1,6 +1,6 @@
 package com.idh.ded.controllers;
 
-import com.idh.ded.DTOs.Class;
+import com.idh.ded.domain.Class;
 import com.idh.ded.services.ClassService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

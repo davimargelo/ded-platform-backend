@@ -1,4 +1,4 @@
-package com.idh.ded.DTOs.enums;
+package com.idh.ded.domain.enums;
 
 public enum DiceType {
         D3(4, "Rolls D4"),

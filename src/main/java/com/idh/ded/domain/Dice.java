@@ -1,7 +1,7 @@
-package com.idh.ded.DTOs;
+package com.idh.ded.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.idh.ded.DTOs.enums.DiceType;
+import com.idh.ded.domain.enums.DiceType;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

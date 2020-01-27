@@ -1,6 +1,6 @@
 package com.idh.ded.services;
 
-import com.idh.ded.DTOs.Class;
+import com.idh.ded.domain.Class;
 import com.idh.ded.repositories.ClassRepository;
 import com.idh.ded.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;

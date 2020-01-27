@@ -1,18 +1,17 @@
 package com.idh.ded.services;
 
-import com.idh.ded.DTOs.Dice;
-import com.idh.ded.DTOs.DicePreset;
-import com.idh.ded.DTOs.enums.DiceType;
+import com.idh.ded.domain.Dice;
+import com.idh.ded.domain.DicePreset;
+import com.idh.ded.domain.enums.DiceType;
 import com.idh.ded.repositories.DicePresetsRepository;
 import com.idh.ded.repositories.DiceRollRepository;
 import com.idh.ded.services.exceptions.ObjectAlreadyExistsException;
 import com.idh.ded.services.exceptions.ObjectNotFoundException;
-import org.apache.http.client.HttpResponseException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class DiceService {
@@ -52,9 +51,11 @@ public class DiceService {
 
         List<Map<String, Integer>> result = new ArrayList<>();
 
-        for (Dice dice : preset.getDiceList()) {
-            result.add(roll(dice.getD().getCod(), dice.getRolls()));
-        }
+        result = preset.getDiceList().stream().map(dice -> roll(dice.getD().getCod(), dice.getRolls())).collect(Collectors.toList());
+// foreach para referencia
+//        for (Dice dice : preset.getDiceList()) {
+//            result.add(roll(dice.getD().getCod(), dice.getRolls()));
+//        }
         return result;
     }
 

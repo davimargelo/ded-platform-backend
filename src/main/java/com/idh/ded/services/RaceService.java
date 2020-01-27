@@ -1,6 +1,6 @@
 package com.idh.ded.services;
 
-import com.idh.ded.DTOs.Races;
+import com.idh.ded.domain.Races;
 import com.idh.ded.repositories.RaceRepository;
 import com.idh.ded.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.idh.ded.DTOs;
+package com.idh.ded.domain;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

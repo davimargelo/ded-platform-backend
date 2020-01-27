@@ -1,9 +1,8 @@
 package com.idh.ded.controllers;
 
-import com.idh.ded.DTOs.DicePreset;
+import com.idh.ded.domain.DicePreset;
 import com.idh.ded.services.DiceService;
 import io.swagger.annotations.ApiOperation;
-import org.apache.http.client.HttpResponseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

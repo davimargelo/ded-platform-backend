@@ -1,6 +1,6 @@
 package com.idh.ded.repositories;
 
-import com.idh.ded.DTOs.Races;
+import com.idh.ded.domain.Races;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

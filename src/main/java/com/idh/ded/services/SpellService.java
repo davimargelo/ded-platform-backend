@@ -1,9 +1,8 @@
 package com.idh.ded.services;
 
-import com.idh.ded.DTOs.Spell;
+import com.idh.ded.domain.Spell;
 import com.idh.ded.repositories.SpellRepository;
 import com.idh.ded.services.exceptions.ObjectNotFoundException;
-import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

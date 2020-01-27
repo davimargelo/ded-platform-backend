@@ -1,25 +1,25 @@
-package com.idh.ded.DTOs;
+package com.idh.ded.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class Races {
+public class Spell {
 
     @Id
     private String id;
     private String name;
-    private String racesDescription;
+    private String effectDescription;
     private String url;
 
-    public Races(String id, String name, String racesDescription, String url) {
+    public Spell(String id, String name, String effectDescription, String url) {
         this.id = id;
         this.name = name;
-        this.racesDescription = racesDescription;
+        this.effectDescription = effectDescription;
         this.url = url;
     }
 
-    public Races() {
+    public Spell() {
     }
 
     public String getId() {
@@ -38,12 +38,12 @@ public class Races {
         this.name = name;
     }
 
-    public String getRaces() {
-        return racesDescription;
+    public String getEffect() {
+        return effectDescription;
     }
 
-    public void setRaces(String races) {
-        this.racesDescription = races;
+    public void setEffect(String effect) {
+        this.effectDescription = effect;
     }
 
     public String getUrl() {

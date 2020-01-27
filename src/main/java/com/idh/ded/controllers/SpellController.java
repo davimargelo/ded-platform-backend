@@ -1,6 +1,6 @@
 package com.idh.ded.controllers;
 
-import com.idh.ded.DTOs.Spell;
+import com.idh.ded.domain.Spell;
 import com.idh.ded.services.SpellService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

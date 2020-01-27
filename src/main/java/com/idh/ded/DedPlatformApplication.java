@@ -1,8 +1,8 @@
 package com.idh.ded;
 
-import com.idh.ded.DTOs.Class;
-import com.idh.ded.DTOs.Races;
-import com.idh.ded.DTOs.Spell;
+import com.idh.ded.domain.Class;
+import com.idh.ded.domain.Races;
+import com.idh.ded.domain.Spell;
 import com.idh.ded.repositories.ClassRepository;
 
 import com.idh.ded.repositories.RaceRepository;
