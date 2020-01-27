@@ -51,15 +51,10 @@ public class DiceController {
     @PostMapping(value = "/{presetName}")
     public ResponseEntity<?> createPreSet(@PathVariable String presetName, @RequestBody List<Map<String, Integer>> dices) {
         System.out.println(presetName + "\n" + dices);
-
-        try {
             DicePreset dicePreset = diceService.createPreset(presetName, dices);
             URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                     .buildAndExpand(dicePreset.getName()).toUri();
             return ResponseEntity.created(uri).build();
-        } catch (HttpResponseException e) {
-            return ResponseEntity.status(e.getStatusCode()).body(e.getReasonPhrase());
-        }
     }
 
     @ApiOperation(value = "Gets a preset by name")
@@ -70,21 +65,13 @@ public class DiceController {
 
     @PutMapping(value = "/{presetName}")
     public ResponseEntity<?> updatePresetDiceList(@PathVariable String presetName, @RequestBody List<Map<String, Integer>> dices) {
-        try {
             return ResponseEntity.status(HttpStatus.OK).body(diceService.updatePresetDicelist(presetName, dices));
-        } catch (HttpResponseException e) {
-            return ResponseEntity.status(e.getStatusCode()).body(e.getReasonPhrase());
-        }
     }
 
     @ApiOperation(value = "Updates a preset names + dicelist by sending a new array of objects: {\"d\": Integer, \"rolls\": Integer}")
     @PutMapping(value = "/{presetName}/{newPresetName}")
     public ResponseEntity<?> updatePreset(@PathVariable String presetName, @PathVariable String newPresetName, @RequestBody List<Map<String, Integer>> dices) {
-        try {
             return ResponseEntity.status(HttpStatus.OK).body(diceService.updatePreset(presetName, newPresetName, dices));
-        } catch (HttpResponseException e) {
-            return ResponseEntity.status(e.getStatusCode()).body(e.getReasonPhrase());
-        }
     }
 
     @ApiOperation(value = "Deletes a preset by name")

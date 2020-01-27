@@ -5,6 +5,7 @@ import com.idh.ded.DTOs.DicePreset;
 import com.idh.ded.DTOs.enums.DiceType;
 import com.idh.ded.repositories.DicePresetsRepository;
 import com.idh.ded.repositories.DiceRollRepository;
+import com.idh.ded.services.exceptions.ObjectAlreadyExistsException;
 import com.idh.ded.services.exceptions.ObjectNotFoundException;
 import org.apache.http.client.HttpResponseException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +58,7 @@ public class DiceService {
         return result;
     }
 
-    public DicePreset createPreset(String presetName, List<Map<String, Integer>> dices) throws HttpResponseException {
+    public DicePreset createPreset(String presetName, List<Map<String, Integer>> dices) {
 
         existsById(presetName);
 
@@ -85,9 +86,9 @@ public class DiceService {
                 .orElseThrow(() -> new ObjectNotFoundException("404 - Not Found ID: " + presetName, new Throwable("Type: " + DicePreset.class.getName())));
     }
 
-    private boolean existsById(String presetName) throws HttpResponseException {
+    private boolean existsById(String presetName) {
         if (dicePresetsRepository.existsById(presetName))
-            throw new HttpResponseException(HttpStatus.CONFLICT.value(), "This Preset Name is been used");
+            throw new ObjectAlreadyExistsException("This Preset Name is been used");
         else
             return false;
     }
@@ -96,7 +97,7 @@ public class DiceService {
         return dicePresetsRepository.findAll();
     }
 
-    public DicePreset updatePreset(String presetName, String newPresetName, List<Map<String, Integer>> dices) throws HttpResponseException {
+    public DicePreset updatePreset(String presetName, String newPresetName, List<Map<String, Integer>> dices) {
         existsById(newPresetName);
 
         findOne(presetName);
@@ -108,7 +109,7 @@ public class DiceService {
         return findOne(newPresetName);
     }
 
-    public DicePreset updatePresetDicelist(String presetName, List<Map<String, Integer>> dices) throws HttpResponseException {
+    public DicePreset updatePresetDicelist(String presetName, List<Map<String, Integer>> dices) {
         findOne(presetName);
 
         DicePreset dicePresetToUpdate = dicePresetsRepository.getOne(presetName);
