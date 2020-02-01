@@ -20,6 +20,8 @@ public class Equipment {
 
     private Double weight; // lbs
 
+    private String attributes;
+
     private String type;
 
     private Double cost; // gps
@@ -29,9 +31,10 @@ public class Equipment {
 
     private String notes;
 
-    public Equipment(String name, Double weight, String type, Double cost, String description, String notes) {
+    public Equipment(String name, Double weight, String attributes, String type, Double cost, String description, String notes) {
         this.name = name;
         this.weight = weight;
+        this.attributes = attributes;
         this.type = type;
         this.cost = cost;
         this.description = description;
