@@ -2,6 +2,7 @@ package com.idh.ded.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 
 @Entity
 public class Spell {
@@ -9,6 +10,7 @@ public class Spell {
     @Id
     private String id;
     private String name;
+    @Lob
     private String effectDescription;
     private String url;
 

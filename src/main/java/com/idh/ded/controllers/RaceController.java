@@ -25,7 +25,6 @@ public class RaceController {
         return ResponseEntity.status(HttpStatus.OK).body(allRaces);
     }
 
-    //Pedir explicação de novo depois
     @GetMapping(value = "{racesId}")
     public ResponseEntity<Races> findOne(@PathVariable("racesId") String racesId) {
         Races racs = raceService.getOne(racesId);
