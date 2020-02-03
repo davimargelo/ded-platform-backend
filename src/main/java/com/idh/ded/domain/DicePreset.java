@@ -9,18 +9,28 @@ import java.util.List;
 public class DicePreset {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
     @NotNull
     private String name;
 
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
+                    CascadeType.ALL
             })
     @JoinTable(name = "DICEPRESET_DICE", joinColumns = @JoinColumn(name = "dicePreset_id"), inverseJoinColumns = @JoinColumn(name = "dice_id"))
     private List<Dice> diceList = new ArrayList<>();
 
     public DicePreset() {
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public DicePreset(String name) {
