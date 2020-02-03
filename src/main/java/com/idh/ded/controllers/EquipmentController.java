@@ -19,11 +19,12 @@ public class EquipmentController {
     @ApiOperation(value = "Get all Equipments By PAGE")
     @GetMapping(value = "page")
     public ResponseEntity<Page<Equipment>> getAllEquipmentsByPage(
+            @RequestParam(value = "name", defaultValue = "") String name,
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "size", defaultValue = "10")Integer size,
             @RequestParam(value = "orderBy", defaultValue = "name")String orderBy,
             @RequestParam(value = "direction", defaultValue = "ASC")String direction) {
-        return ResponseEntity.status(HttpStatus.OK).body(equipmentService.getAllEquipmentsByPage(page, size, orderBy, direction));
+        return ResponseEntity.status(HttpStatus.OK).body(equipmentService.getAllEquipmentsByPage(name, page, size, orderBy, direction));
     }
 
     @ApiOperation(value = "Gets a Equipment by Id")

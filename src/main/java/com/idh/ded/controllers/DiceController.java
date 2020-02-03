@@ -52,14 +52,15 @@ public class DiceController {
         return ResponseEntity.status(HttpStatus.OK).body(diceService.getAllDicePresets());
     }
 
-    @ApiOperation(value = "Get all Presets By PAGE")
+    @ApiOperation(value = "Get all Presets By PAGE + search name")
     @GetMapping(value = "page")
     public ResponseEntity<Page<DicePreset>> getAllPresetsByPage(
+            @RequestParam(value = "name", defaultValue = "") String name,
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "size", defaultValue = "10")Integer size,
             @RequestParam(value = "orderBy", defaultValue = "name")String orderBy,
             @RequestParam(value = "direction", defaultValue = "ASC")String direction) {
-        return ResponseEntity.status(HttpStatus.OK).body(diceService.getAllDicePresetsByPage(page, size, orderBy, direction));
+        return ResponseEntity.status(HttpStatus.OK).body(diceService.getAllDicePresetsByPage(name, page, size, orderBy, direction));
     }
 
     @ApiOperation(value = "Creates a new preset")
