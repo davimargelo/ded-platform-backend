@@ -1,10 +1,12 @@
 package com.idh.ded;
 
 import com.idh.ded.domain.Class;
+import com.idh.ded.domain.Equipment;
 import com.idh.ded.domain.Races;
 import com.idh.ded.domain.Spell;
 import com.idh.ded.repositories.ClassRepository;
 
+import com.idh.ded.repositories.EquipmentRepository;
 import com.idh.ded.repositories.RaceRepository;
 import com.idh.ded.repositories.SpellRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,9 @@ public class DedPlatformApplication implements CommandLineRunner {
 
 	@Autowired
 	RaceRepository raceRepository;
+
+	@Autowired
+	EquipmentRepository equipmentRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(DedPlatformApplication.class, args);
@@ -50,5 +55,11 @@ public class DedPlatformApplication implements CommandLineRunner {
 				new Races("khajiit","Khajiit","Coming from Arnos Province, Khajiit is smart, fast and agile. They make excellent thieves due to their natural invisibility.","races/khajiit"),
 				new Races("hobbit","Hobbit","Hobbits are a discreet and very old people, usually no more than one meter high, are much less robust than dwarves and consider the possibility of participating in an adventure as an insane attitude,","races/hobbit")
 			));
+
+		equipmentRepository.saveAll(Arrays.asList(
+				new Equipment("Abacus", (double) 2, "", "Adventuring Gear",2.0,"A standard tool used to make calculations.","UTILITY"),
+				new Equipment("Arrows", (double) 1,"","Ammunition",1.0,"Arrows are used with a weapon that has the ammunition property to make a ranged attack. Each time you attack with the weapon, you expend one piece of ammunition. Drawing the ammunition from a quiver, case, or other container is part of the attack (you need a free hand to load a one-handed weapon). At the end of the battle, you can recover half your expended ammunition by taking a minute to search the battlefield.",
+						      "DAMAGE" + " " + "COMBAT")
+		));
 	}
 }

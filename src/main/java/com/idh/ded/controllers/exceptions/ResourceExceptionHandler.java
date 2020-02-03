@@ -23,5 +23,4 @@ public class ResourceExceptionHandler {
         StandardError err = new StandardError(HttpStatus.CONFLICT.value(), e.getMessage(), System.currentTimeMillis());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(err);
     }
-
 }

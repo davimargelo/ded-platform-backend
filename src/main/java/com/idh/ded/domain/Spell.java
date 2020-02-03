@@ -1,14 +1,15 @@
 package com.idh.ded.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Spell {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
     private String name;
+    @Lob
     private String effectDescription;
     private String url;
 

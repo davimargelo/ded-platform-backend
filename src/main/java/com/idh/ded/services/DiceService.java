@@ -55,8 +55,8 @@ public class DiceService {
         return result;
     }
 
-    public List<Map<String, String>> rollPreset(String presetName) {
-        DicePreset preset = findOne(presetName);
+    public List<Map<String, String>> rollPreset(Integer presetId) {
+        DicePreset preset = findOne(presetId);
 
         List<Map<String, String>> result = new ArrayList<>();
 
@@ -68,36 +68,28 @@ public class DiceService {
         return result;
     }
 
-    public DicePreset createPreset(String presetName, List<Map<String, Integer>> dices) {
+    public DicePreset createPreset(String presetName, List<Dice> diceList) {
+            DicePreset dicePreset = new DicePreset(presetName);
 
-        existsById(presetName);
+            dicePreset.getDiceList().addAll(diceList);
 
-        List<Dice> diceList = new ArrayList<>();
+            for (Dice d : diceList) {
+                d.getDicePresetList().add(dicePreset);
+            }
 
-        for (Map<String, Integer> dice : dices) {
-            diceList.add(diceProducer(DiceType.toEnum(dice.get("d")), dice.get("rolls")));
-        }
+            dicePresetsRepository.save(dicePreset);
 
-        DicePreset dicePreset = new DicePreset(presetName);
-
-        dicePreset.getDiceList().addAll(diceList);
-
-        for (Dice d : diceList) {
-            d.getDicePresetList().add(dicePreset);
-        }
-
-        dicePresetsRepository.save(dicePreset);
-
-        return dicePresetsRepository.getOne(presetName);
+            return dicePresetsRepository.getOne(dicePreset.getId());
     }
 
-    public DicePreset findOne(String presetName) {
-        return dicePresetsRepository.findById(presetName)
-                .orElseThrow(() -> new ObjectNotFoundException("404 - Not Found ID: " + presetName, new Throwable("Type: " + DicePreset.class.getName())));
+    public DicePreset findOne(Integer presetId) {
+        return dicePresetsRepository.findById(presetId)
+                .orElseThrow(() -> new ObjectNotFoundException("404 - Not Found ID: " + presetId, new Throwable("Type: " + DicePreset.class.getName())));
     }
 
-    private boolean existsById(String presetName) {
-        if (dicePresetsRepository.existsById(presetName))
+    @Deprecated
+    private boolean existsById(Integer presetId) {
+        if (dicePresetsRepository.existsById(presetId))
             throw new ObjectAlreadyExistsException("This Preset Name is been used");
         else
             return false;
@@ -107,41 +99,43 @@ public class DiceService {
         return dicePresetsRepository.findAll();
     }
 
-    public DicePreset updatePreset(String presetName, String newPresetName, List<Map<String, Integer>> dices) {
-        existsById(newPresetName);
+    public DicePreset updatePreset(Integer presetId, String newPresetName, List<Dice> diceList) {
+//        existsById(presetId);
 
-        findOne(presetName);
+        DicePreset dicePreset = findOne(presetId);
 
-        dicePresetsRepository.deleteById(presetName);
+        List<Dice> dicesToRemove = new ArrayList<>(dicePreset.getDiceList());
+        dicePreset.getDiceList().clear();
 
-        createPreset(newPresetName, dices);
+        diceRollRepository.deleteAll(dicesToRemove);
 
-        return findOne(newPresetName);
+        dicePreset.setName(newPresetName);
+        dicePreset.setDiceList(diceList);
+
+        dicePresetsRepository.save(dicePreset);
+
+        return findOne(presetId);
     }
 
-    public DicePreset updatePresetDicelist(String presetName, List<Map<String, Integer>> dices) {
-        findOne(presetName);
+    public void deletePreset(Integer presetId) {
+        findOne(presetId);
+        dicePresetsRepository.deleteById(presetId);
+    }
 
-        DicePreset dicePresetToUpdate = dicePresetsRepository.getOne(presetName);
+    @Deprecated
+    public DicePreset updatePresetDicelist(Integer presetId, List<Dice> diceList) {
+        findOne(presetId);
 
-        List<Dice> diceList = new ArrayList<>();
-
-        for (Map<String, Integer> dice : dices) {
-            diceList.add(diceProducer(DiceType.toEnum(dice.get("d")), dice.get("rolls")));
-        }
+        DicePreset dicePresetToUpdate = dicePresetsRepository.getOne(presetId);
 
         dicePresetToUpdate.getDiceList().clear();
         dicePresetToUpdate.getDiceList().addAll(diceList);
 
         dicePresetsRepository.save(dicePresetToUpdate);
-        return dicePresetsRepository.getOne(presetName);
+        return dicePresetsRepository.getOne(presetId);
     }
 
-    public void deletePreset(String presetName) {
-        findOne(presetName);
-        dicePresetsRepository.deleteById(presetName);
-    }
-
+    @Deprecated
     private Dice diceProducer(DiceType diceType, Integer rolls) {
         List<Dice> dicesAndRolls = diceRollRepository.findAll();
 
