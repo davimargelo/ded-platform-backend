@@ -1,7 +1,5 @@
 package com.idh.ded.services;
 
-import com.idh.ded.domain.Class;
-import com.idh.ded.domain.DicePreset;
 import com.idh.ded.domain.Equipment;
 import com.idh.ded.repositories.EquipmentRepository;
 import com.idh.ded.services.exceptions.ObjectNotFoundException;
@@ -26,9 +24,9 @@ public class EquipmentService {
         return repo.findById(equipmentId).orElseThrow(() -> new ObjectNotFoundException("404 - Not Found ID: " + equipmentId, new Throwable("Type: " + Equipment.class.getName())));
     }
 
-    public Page<Equipment> getAllEquipmentsByPage(Integer page, Integer size, String orderBy, String direction) {
+    public Page<Equipment> getAllEquipmentsByPage(String name, Integer page, Integer size, String orderBy, String direction) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.valueOf(direction), orderBy);
-        return repo.findAll(pageRequest);
+        return repo.findDistinctByNameContainingIgnoreCase(name, pageRequest);
     }
 
 }

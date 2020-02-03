@@ -25,9 +25,9 @@ public class DiceService {
     @Autowired
     DiceRollRepository diceRollRepository;
 
-    public Page<DicePreset> getAllDicePresetsByPage(Integer page, Integer size, String orderBy, String direction) {
+    public Page<DicePreset> getAllDicePresetsByPage(String name, Integer page, Integer size, String orderBy, String direction) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.valueOf(direction), orderBy);
-        return dicePresetsRepository.findAll(pageRequest);
+        return dicePresetsRepository.findDistinctByNameContainingIgnoreCase(name, pageRequest);
     }
 
     public Map<String, String> roll(Integer dice, Integer rolls) {
