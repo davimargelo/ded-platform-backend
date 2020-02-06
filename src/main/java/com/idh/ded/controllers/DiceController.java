@@ -2,6 +2,7 @@ package com.idh.ded.controllers;
 
 import com.idh.ded.domain.Dice;
 import com.idh.ded.domain.DicePreset;
+import com.idh.ded.domain.enums.DiceType;
 import com.idh.ded.dtos.DicePresetDTO;
 import com.idh.ded.services.DiceService;
 import io.swagger.annotations.ApiOperation;
@@ -28,6 +29,12 @@ public class DiceController {
     @GetMapping(value = "/rollers")
     public ResponseEntity<?> findAllRollers() {
         return ResponseEntity.status(HttpStatus.OK).body(diceService.findRollers());
+    }
+
+    @ApiOperation(value = "Returns the DiceType enum")
+    @GetMapping(value = "/types")
+    public ResponseEntity<?> findTypes() {
+        return ResponseEntity.status(HttpStatus.OK).body(DiceType.values());
     }
 
     @ApiOperation(value = "Number of sides / number of rolls = to generate a random play")
